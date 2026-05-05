@@ -68,7 +68,7 @@ cd laradocker
 ### 2. Entrar no projeto
 
 ```bash
-cd laradocker
+cd teste-electra
 ```
 
 ### 3. Execute o Setup Completo
