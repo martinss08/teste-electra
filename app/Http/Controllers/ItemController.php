@@ -70,12 +70,12 @@ class ItemController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $item = $this->itemService->delete($id);
+        $deleted = $this->itemService->delete($id);
 
-        if(!$item) {
+        if(!$deleted) {
             return $this->errorResponse('Erro ao deletar item!', 404);
         }
 
-        return $this->successResponse($item, 'Item deletado com sucesso!');
+        return $this->successResponse(null, 'Item deletado com sucesso!');
     }
 }

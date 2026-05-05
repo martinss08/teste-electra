@@ -3,64 +3,45 @@
 namespace App\Service;
 
 use App\Models\Item;
+use App\Repositories\Contracts\ItemRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class ItemService
 {
     /**
      * Create a new class instance.
      */
-    public function __construct(protected Item $model)
-    {    }
+    public function __construct(protected ItemRepositoryInterface $repository)
+    {
+    }
 
     public function paginate(int $perPage = 10): LengthAwarePaginator
     {
-        return $this->model->paginate($perPage);
+        return $this->repository->paginate($perPage);
     }
 
     public function getSummary(): array
     {
-        return [
-            'total_quantity' => $this->model->sum('quantity'),
-            'total_value' => $this->model->sum(DB::raw('price * quantity')),
-        ];
+        return $this->repository->getSummary();
     }
 
     public function create(array $data): Item
     {
-        return $this->model->create($data);
+        return $this->repository->create($data);
     }
 
     public function find(int $id): ?Item
     {
-        return $this->model->findOrFail($id);
+        return $this->repository->find($id);
     }
 
     public function update(array $data, int $id): ?Item
     {
-        $item = $this->find($id);
-
-        if (!$item) {
-            return null;
-        }
-
-        $item->update($data);
-
-        return $item;
+        return $this->repository->update($data, $id);
     }
 
-    public function delete(int $id): ?Item
+    public function delete(int $id): bool
     {
-        $item = $this->find($id);
-
-        if (!$item) {
-            return null;
-        }
-
-        $item->delete();
-
-        return $item;
+        return $this->repository->delete($id);
     }
 }

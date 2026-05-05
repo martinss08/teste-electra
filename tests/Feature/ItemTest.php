@@ -25,7 +25,7 @@ class ItemTest extends TestCase
         $response = $this->post(route('items.store'), [
             'name' => 'Item Teste',
             'code' => 'ITEM001',
-            'category' => 'Categoria Teste',
+            'category' => 'Eletrônicos',
             'description' => 'Descrição teste',
             'price' => 10.5,
             'quantity' => 2,
@@ -36,7 +36,7 @@ class ItemTest extends TestCase
         $this->assertDatabaseHas('items', [
             'name' => 'Item Teste',
             'code' => 'ITEM001',
-            'category' => 'Categoria Teste',
+            'category' => 'Eletrônicos',
             'description' => 'Descrição teste',
             'price' => 10.5,
             'quantity' => 2,
@@ -77,7 +77,7 @@ class ItemTest extends TestCase
             ->assertStatus(404)
             ->assertJson([
                 'message' => 'Item não encontrado!',
-                'item' => null
+                'data' => null
             ]);
     }
 
@@ -88,7 +88,7 @@ class ItemTest extends TestCase
         $data = [
             'name' => 'Updated Item',
             'code' => 'UPD001',
-            'category' => 'Updated Category',
+            'category' => 'Livros',
             'quantity' => 10,
             'description' => 'Updated description',
             'price' => 99.99,
@@ -118,7 +118,7 @@ class ItemTest extends TestCase
             'quantity' => 1,
         ]);
 
-        $response->assertStatus(500);
+        $response->assertStatus(404);
     }
 
     public function test_delete_item()
