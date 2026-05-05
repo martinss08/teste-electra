@@ -4,6 +4,7 @@ CONTEINER=laradocker_app
 
 setup:
 	docker compose up -d --build
+	docker exec -it $(CONTEINER) sh -c "[ -f .env ] || cp .env.example .env"
 	docker exec -it $(CONTEINER) composer install 
 	docker exec -it $(CONTEINER) php artisan key:generate --force
 	docker exec -it $(CONTEINER) php artisan migrate:fresh --seed --force
