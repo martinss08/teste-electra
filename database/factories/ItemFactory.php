@@ -19,6 +19,8 @@ class ItemFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
+            'code' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'category' => $this->faker->randomElement(['Eletrônicos', 'Alimentos', 'Móveis', 'Livros', 'Brinquedos', 'Ferramentas', 'Outros']),
             'description' => $this->faker->sentence(),
             'quantity' => $this->faker->numberBetween(1, 100),
             'price' => $this->faker->randomFloat(2, 1, 100),

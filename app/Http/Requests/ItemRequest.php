@@ -23,8 +23,12 @@ class ItemRequest extends FormRequest
      */
     public function rules(): array
     {
+        $itemId = $this->route('item');
+        
         return [
             'name' => 'required|string|min:3|max:255',
+            'code' => 'nullable|string|max:50|unique:items,code,' . $itemId,
+            'category' => 'nullable|string|in:Eletrônicos,Alimentos,Vestuário,Móveis,Livros,Brinquedos,Ferramentas,Outros',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
@@ -38,6 +42,13 @@ class ItemRequest extends FormRequest
             'name.string' => 'O campo nome deve ser uma string.',
             'name.min' => 'O campo nome deve ser no mínimo 3 caracteres.',
             'name.max' => 'O campo nome não pode exceder 255 caracteres.',
+
+            'code.string' => 'O campo código deve ser uma string.',
+            'code.max' => 'O campo código não pode exceder 50 caracteres.',
+            'code.unique' => 'Este código já está em uso.',
+
+            'category.string' => 'O campo categoria deve ser uma string.',
+            'category.in' => 'A categoria selecionada é inválida.',
 
             'description.string' => 'O campo descrição deve ser uma string.',
 

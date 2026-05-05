@@ -24,6 +24,8 @@ class ItemTest extends TestCase
     {
         $response = $this->post(route('items.store'), [
             'name' => 'Item Teste',
+            'code' => 'ITEM001',
+            'category' => 'Categoria Teste',
             'description' => 'Descrição teste',
             'price' => 10.5,
             'quantity' => 2,
@@ -33,6 +35,8 @@ class ItemTest extends TestCase
 
         $this->assertDatabaseHas('items', [
             'name' => 'Item Teste',
+            'code' => 'ITEM001',
+            'category' => 'Categoria Teste',
             'description' => 'Descrição teste',
             'price' => 10.5,
             'quantity' => 2,
@@ -49,9 +53,11 @@ class ItemTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure([
                 'message',
-                'item' => [
+                'data' => [
                     'id',
                     'name',
+                    'code',
+                    'category',
                     'description',
                     'price',
                     'quantity',
@@ -63,17 +69,17 @@ class ItemTest extends TestCase
             ]);
     }
 
-    // public function test_show_item_not_found()
-    // {
-    //     $response = $this->get(route('items.show', 999));
+    public function test_show_item_not_found()
+    {
+        $response = $this->get(route('items.show', 999));
 
-    //     $response
-    //         ->assertStatus(404)
-    //         ->assertJson([
-    //             'message' => 'Item não encontrado!',
-    //             'item' => null
-    //         ]);
-    // }
+        $response
+            ->assertStatus(404)
+            ->assertJson([
+                'message' => 'Item não encontrado!',
+                'item' => null
+            ]);
+    }
 
     public function test_update_item()
     {
@@ -81,6 +87,8 @@ class ItemTest extends TestCase
 
         $data = [
             'name' => 'Updated Item',
+            'code' => 'UPD001',
+            'category' => 'Updated Category',
             'quantity' => 10,
             'description' => 'Updated description',
             'price' => 99.99,
@@ -102,16 +110,16 @@ class ItemTest extends TestCase
         ]);
     }
 
-    // public function test_update_item_not_found()
-    // {
-    //     $response = $this->put(route('items.update', 999), [
-    //         'name' => 'Teste',
-    //         'price' => 10,
-    //         'quantity' => 1,
-    //     ]);
+    public function test_update_item_not_found()
+    {
+        $response = $this->put(route('items.update', 999), [
+            'name' => 'Teste',
+            'price' => 10,
+            'quantity' => 1,
+        ]);
 
-    //     $response->assertStatus(500);
-    // }
+        $response->assertStatus(500);
+    }
 
     public function test_delete_item()
     {
@@ -130,12 +138,12 @@ class ItemTest extends TestCase
         ]);
     }
 
-    // public function test_delete_item_not_found()
-    // {
-    //     $response = $this->delete(route('items.destroy', 999));
+    public function test_delete_item_not_found()
+    {
+        $response = $this->delete(route('items.destroy', 999));
 
-    //     $response->assertStatus(404);
-    // }
+        $response->assertStatus(404);
+    }
 
    public function test_create_item_validation()
     {
@@ -152,5 +160,60 @@ class ItemTest extends TestCase
                     'quantity'
                 ]
             ]);
+    }
+
+    public function test_store_item_with_duplicate_code()
+    {
+        Item::factory()->create(['code' => 'CODE123']);
+
+        $response = $this->post(route('items.store'), [
+            'name' => 'Novo Item',
+            'code' => 'CODE123',
+            'price' => 10,
+            'quantity' => 5,
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['code'])
+            ->assertJson([
+                'errors' => [
+                    'code' => ['Este código já está em uso.']
+                ]
+            ]);
+    }
+
+    public function test_update_item_with_duplicate_code()
+    {
+        $item1 = Item::factory()->create(['code' => 'CODE456']);
+        $item2 = Item::factory()->create(['code' => 'CODE789']);
+
+        $response = $this->put(route('items.update', $item2->id), [
+            'name' => $item2->name,
+            'code' => 'CODE456',
+            'price' => $item2->price,
+            'quantity' => $item2->quantity,
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['code']);
+    }
+
+    public function test_store_item_without_optional_fields()
+    {
+        $response = $this->post(route('items.store'), [
+            'name' => 'Item Simples',
+            'price' => 25.50,
+            'quantity' => 3,
+        ]);
+
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('items', [
+            'name' => 'Item Simples',
+            'price' => 25.50,
+            'quantity' => 3,
+        ]);
     }
 }

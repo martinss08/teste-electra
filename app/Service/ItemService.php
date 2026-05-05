@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Models\Item;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ItemService
 {
@@ -13,9 +15,17 @@ class ItemService
     public function __construct(protected Item $model)
     {    }
 
-    public function all(): Collection
+    public function paginate(int $perPage = 10): LengthAwarePaginator
     {
-        return $this->model->all();
+        return $this->model->paginate($perPage);
+    }
+
+    public function getSummary(): array
+    {
+        return [
+            'total_quantity' => $this->model->sum('quantity'),
+            'total_value' => $this->model->sum(DB::raw('price * quantity')),
+        ];
     }
 
     public function create(array $data): Item
@@ -25,7 +35,7 @@ class ItemService
 
     public function find(int $id): ?Item
     {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
     }
 
     public function update(array $data, int $id): ?Item

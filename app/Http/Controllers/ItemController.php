@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ItemRequest;
 use App\Service\ItemService;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ApiResponse;
 
 class ItemController extends Controller
 {
+    use ApiResponse;
+
     public function __construct(protected ItemService $itemService)
     { }
 
@@ -16,19 +19,12 @@ class ItemController extends Controller
      */
     public function index(): JsonResponse
     {
-        $item = $this->itemService->all();
-    
-        if($item->isEmpty()) {
-            return response()->json([
-                'message' => 'Nenhum item encontrado!',
-                'items' => []
-            ], 200);
-        }
+        $item = $this->itemService->paginate(10);
 
-        return response()->json([
-            'message' => 'Itens encontrados com sucesso!',
-            'items' => $item
-        ], 200);
+        return $this->successResponse([
+            'items' => $item,
+            'summary' => $this->itemService->getSummary()
+        ], 'Itens encontrados com sucesso!');
     }
 
     /**
@@ -38,10 +34,7 @@ class ItemController extends Controller
     {
         $item = $this->itemService->create($request->validated());
 
-        return response()->json([
-            'message' => 'Item criado com sucesso!',
-            'item' => $item
-        ], 201);
+        return $this->successResponse($item, 'Item criado com sucesso!', 201);
     }
 
     /**
@@ -52,16 +45,10 @@ class ItemController extends Controller
         $item = $this->itemService->find($id);
 
         if(!$item) {
-            return response()->json([
-                'message' => 'Item não encontrado!',
-                'item' => null
-            ], 404);
+            return $this->errorResponse('Item não encontrado!', 404);
         }
 
-        return response()->json([
-            'message' => 'Item encontrado com sucesso!',
-            'item' => $item
-        ], 200);
+        return $this->successResponse($item, 'Item encontrado com sucesso!');
     }
 
     /**
@@ -72,16 +59,10 @@ class ItemController extends Controller
         $item = $this->itemService->update($request->validated(), $id);
 
         if(!$item) {
-            return response()->json([
-                'message' => 'Erro ao atualizar item!',
-                'item' => null
-            ], 500);
+            return $this->errorResponse('Erro ao atualizar item!', 404);
         }
 
-        return response()->json([
-            'message' => 'Item atualizado com sucesso!',
-            'item' => $item
-        ], 200);
+        return $this->successResponse($item, 'Item atualizado com sucesso!');
     }
 
     /**
@@ -92,15 +73,9 @@ class ItemController extends Controller
         $item = $this->itemService->delete($id);
 
         if(!$item) {
-            return response()->json([
-                'message' => 'Erro ao deletar item!',
-                'item' => null
-            ], 404);
+            return $this->errorResponse('Erro ao deletar item!', 404);
         }
 
-        return response()->json([
-            'message' => 'Item deletado com sucesso!',
-            'item' => $item
-        ], 200);
+        return $this->successResponse($item, 'Item deletado com sucesso!');
     }
 }

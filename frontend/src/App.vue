@@ -1,0 +1,20 @@
+<script setup>
+import ItemManager from './components/ItemManager.vue'
+</script>
+
+<template>
+  <ItemManager />
+</template>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f8fafc;
+  color: #1e293b;
+}
+</style>
