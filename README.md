@@ -65,8 +65,13 @@ Service Layer Pattern, validações e interface responsiva.
 git clone https://github.com/martinss08/CRUD.git
 cd laradocker
 ```
+### 2. Entrar no projeto
 
-### 2. Execute o Setup Completo
+```bash
+cd laradocker
+```
+
+### 3. Execute o Setup Completo
 
 O projeto possui um Makefile que automatiza todo o processo de instalação:
 
@@ -81,7 +86,7 @@ Este comando irá:
 4. Executar as migrations e seeders (criar banco e popular com dados)
 5. Instalar dependências do frontend e iniciar o servidor Vite
 
-### 3. Acesse a Aplicação
+### 4. Acesse a Aplicação
 
 Após o setup, você terá dois serviços rodando:
 
