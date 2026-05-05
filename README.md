@@ -62,7 +62,7 @@ Service Layer Pattern, validações e interface responsiva.
 ### 1. Clone o Repositório
 
 ```bash
-git clone `https://github.com/martinss08/CRUD.git`
+git clone https://github.com/martinss08/CRUD.git
 cd laradocker
 ```
 
