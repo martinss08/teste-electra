@@ -27,7 +27,7 @@ Service Layer Pattern, Repository Pattern, validações e interface responsiva.
 - **PHP 8.3** - Linguagem de programação
 - **Laravel 13** - Framework PHP
 - **MySQL** - Banco de dados (via migrations)
-- **Trait** - 
+- **Trait** - Padronização de respostas
 - **PHPUnit** - Testes automatizados
 
 ### Frontend
@@ -41,7 +41,6 @@ Service Layer Pattern, Repository Pattern, validações e interface responsiva.
 - **Docker** - Containerização
 - **Docker Compose** - Orquestração de containers
 - **Nginx** - Servidor web
-- **PHP-FPM** - FastCGI Process Manager
 
 ### Ferramentas de Desenvolvimento
 - **Faker** - Geração de dados fake para testes
@@ -62,8 +61,7 @@ Service Layer Pattern, Repository Pattern, validações e interface responsiva.
 ### 1. Clone o Repositório
 
 ```bash
-git clone https://github.com/martinss08/CRUD.git
-cd laradocker
+git clone https://github.com/martinss08/teste-electra.git
 ```
 ### 2. Entrar no projeto
 
@@ -142,19 +140,12 @@ docker logs laradocker_nginx
 | DELETE | `/api/items/{id}`   | Deleta um item                              |
 
 
-### Categorias Válidas
-
-- Eletrônicos
-- Alimentos
-- Vestuário
-- Móveis
-- Livros
-- Brinquedos
-- Ferramentas
-- Outros
 
 
 ## 🧪 Testes
+
+![Home](./resources/img/image-teste.png)
+
 
 O projeto possui testes automatizados para garantir a qualidade do código:
 
