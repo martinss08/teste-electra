@@ -16,4 +16,6 @@ interface ItemRepositoryInterface
     public function find(int $id): ?Item;
 
     public function update(array $data, int $id): ?Item;
+    
+    public function delete(int $id): bool;
 }
