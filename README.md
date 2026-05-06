@@ -7,7 +7,7 @@ Este projeto é uma aplicação de gerenciamento de tarefas desenvolvida com Lar
 ## 📋 Sobre o Projeto
 
 Este é um sistema de gerenciamento de itens que permite criar, visualizar, editar e excluir produtos em estoque. O projeto foi desenvolvido seguindo as melhores práticas de desenvolvimento, com arquitetura em camadas
-Service Layer Pattern, validações e interface responsiva.
+Service Layer Pattern, Repository Pattern, validações e interface responsiva.
  
 ### Funcionalidades
 
